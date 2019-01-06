@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class EnemySpawner : MonoBehaviour
 {
@@ -8,6 +9,8 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] float width;
     [SerializeField] float height;
     [SerializeField] float spawnDelay = 0.5f;
+
+    bool playing = true;
 
     private bool movingRight = true;
     private float xmin;
@@ -21,6 +24,7 @@ public class EnemySpawner : MonoBehaviour
         xmin = leftmost.x;
         xmax = rightmost.x;
         spawn();
+        StartCoroutine(SpawnUntilFull());
     }
 
     void Update()
@@ -43,10 +47,6 @@ public class EnemySpawner : MonoBehaviour
         {
             movingRight = false;
         }
-        if (AllMemebersDead())
-        {
-            SpawnUntilFull();
-        }
     }
 
     void spawn()
@@ -58,43 +58,34 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
-    Transform NextFreePosition()
+    IEnumerator SpawnUntilFull()
     {
+        while (playing)
+        {
+            Transform[] freePositions = GetEmptyPositions();
+            if (freePositions.Length > 0)
+            {
+                Transform freePosition = freePositions[Random.Range(0, freePositions.Length)];
+                GameObject enemy = Instantiate(enemyPrefab, freePosition.transform.position, Quaternion.identity) as GameObject;
+                enemy.transform.parent = freePosition;
+            }
+            yield return new WaitForSeconds(spawnDelay);
+        }
+    }
+
+    Transform[] GetEmptyPositions()
+    {
+        List<Transform> emptyPositions = new List<Transform>();
         foreach (Transform childPositionGameObject in transform)
         {
             if (childPositionGameObject.childCount == 0)
             {
-                return childPositionGameObject;
+                emptyPositions.Add(childPositionGameObject);
             }
         }
-        return null;
+        return emptyPositions.ToArray();
     }
 
-    void SpawnUntilFull()
-    {
-        Transform freePosition = NextFreePosition();
-        if (freePosition)
-        {
-            GameObject enemy = Instantiate(enemyPrefab, freePosition.transform.position, Quaternion.identity) as GameObject;
-            enemy.transform.parent = freePosition;
-        }
-        if (NextFreePosition())
-        {
-            Invoke("SpawnUntilFull", spawnDelay);
-        }
-    }
-
-    bool AllMemebersDead()
-    {
-        foreach (Transform childPositionGameObject in transform)
-        {
-            if (childPositionGameObject.childCount > 0)
-            {
-                return false;
-            }
-        }
-        return true;
-    }
     public void OnDrawGizmos()
     {
         Gizmos.DrawWireCube(transform.position, new Vector3(width, height));
