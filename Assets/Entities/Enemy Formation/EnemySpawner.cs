@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [SerializeField] GameObject enemyPrefab;
+    [SerializeField] List<GameObject> enemyPrefabs = new List<GameObject>();
     [SerializeField] float speed;
     [SerializeField] float width;
     [SerializeField] float height;
@@ -53,7 +53,7 @@ public class EnemySpawner : MonoBehaviour
     {
         foreach (Transform child in transform)
         {
-            GameObject enemy = Instantiate(enemyPrefab, child.transform.position, Quaternion.identity) as GameObject;
+            GameObject enemy = Instantiate(enemyPrefabs[Random.Range(0, enemyPrefabs.Count)], child.transform.position, Quaternion.identity) as GameObject;
             enemy.transform.parent = child;
         }
     }
@@ -66,7 +66,7 @@ public class EnemySpawner : MonoBehaviour
             if (freePositions.Length > 0)
             {
                 Transform freePosition = freePositions[Random.Range(0, freePositions.Length)];
-                GameObject enemy = Instantiate(enemyPrefab, freePosition.transform.position, Quaternion.identity) as GameObject;
+                GameObject enemy = Instantiate(enemyPrefabs[Random.Range(0, enemyPrefabs.Count)], freePosition.transform.position, Quaternion.identity) as GameObject;
                 enemy.transform.parent = freePosition;
             }
             yield return new WaitForSeconds(spawnDelay);
@@ -89,5 +89,10 @@ public class EnemySpawner : MonoBehaviour
     public void OnDrawGizmos()
     {
         Gizmos.DrawWireCube(transform.position, new Vector3(width, height));
+    }
+
+    public void AddEnemyPrefab(GameObject prefab)
+    {
+        enemyPrefabs.Add(prefab);
     }
 }
