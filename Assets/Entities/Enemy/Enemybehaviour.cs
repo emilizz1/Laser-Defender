@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Enemybehaviour : MonoBehaviour
 {
-    [SerializeField] float health = 150f;
+    [SerializeField] int health = 2;
     [SerializeField] GameObject projectile;
     [SerializeField] float projectileSpeed;
     [SerializeField] float firingRate = 0.5f;

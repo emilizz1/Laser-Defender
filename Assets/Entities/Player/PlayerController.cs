@@ -8,11 +8,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] GameObject projectile;
     [SerializeField] float projectileSpeed;
     [SerializeField] float firingRate;
-    [SerializeField] float health = 250;
+    [SerializeField] int health = 10;
     [SerializeField] AudioClip fireSound;
 
     float xmin;
     float xmax;
+    float lastFireTime = 0;
 
     void Start()
     {
@@ -32,13 +33,10 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKey(KeyCode.Space) && Time.time - lastFireTime > firingRate)
         {
-            InvokeRepeating("Fire", 0.00001f, firingRate);
-        }
-        if (Input.GetKeyUp(KeyCode.Space))
-        {
-            CancelInvoke("Fire");
+            Fire();
+            lastFireTime = Time.time;
         }
         if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
         {
@@ -58,6 +56,7 @@ public class PlayerController : MonoBehaviour
         if (missile)
         {
             health -= missile.GetDamage();
+            FindObjectOfType<PlayerHealth>().GotHit(health);
             missile.Hit();
             if (health <= 0)
             {
