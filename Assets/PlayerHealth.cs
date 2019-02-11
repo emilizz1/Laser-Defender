@@ -12,7 +12,7 @@ public class PlayerHealth : MonoBehaviour
         text = GetComponent<Text>();
 	}
 
-    public void GotHit(int currentHealth)
+    public void UpdateHealth(int currentHealth)
     {
         text.text = currentHealth.ToString();
     }

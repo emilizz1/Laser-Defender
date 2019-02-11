@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour
         Vector3 rightmost = Camera.main.ViewportToWorldPoint(new Vector3(1, 0, distance));
         xmin = leftmost.x + padding;
         xmax = rightmost.x - padding;
+        FindObjectOfType<PlayerHealth>().UpdateHealth(health);
     }
 
     void Fire()
@@ -56,7 +57,7 @@ public class PlayerController : MonoBehaviour
         if (missile)
         {
             health -= missile.GetDamage();
-            FindObjectOfType<PlayerHealth>().GotHit(health);
+            FindObjectOfType<PlayerHealth>().UpdateHealth(health);
             missile.Hit();
             if (health <= 0)
             {
