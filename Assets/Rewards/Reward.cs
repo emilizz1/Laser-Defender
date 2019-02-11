@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[CreateAssetMenu(menuName = ("SpaceDefenders/Reward"))]
 public class Reward : ScriptableObject
 {
     [SerializeField] Sprite sprite;

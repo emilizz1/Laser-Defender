@@ -5,12 +5,7 @@ using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
 {
-    Text text;
-
-	void Start ()
-    {
-        text = GetComponent<Text>();
-	}
+    [SerializeField] Text text;
 
     public void UpdateHealth(int currentHealth)
     {
