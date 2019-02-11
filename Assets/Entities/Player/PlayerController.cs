@@ -72,4 +72,30 @@ public class PlayerController : MonoBehaviour
         man.LoadLevel("Win Screen");
         Destroy(gameObject);
     }
+
+    public void UpgradeSpeed()
+    {
+        speed += 1;
+    }
+
+    public void UpgradeDamage()
+    {
+        projectile.GetComponent<Projectile>().IncreaseDamage();
+    }
+
+    public void UpgradeProjectileSpeed()
+    {
+        projectileSpeed += 1;
+    }
+
+    public void UpgradeFiringRate()
+    {
+        firingRate -= 0.05f;
+    }
+
+    public void UpgradeHealth()
+    {
+        health += 10;
+        FindObjectOfType<PlayerHealth>().UpdateHealth(health);
+    }
 }

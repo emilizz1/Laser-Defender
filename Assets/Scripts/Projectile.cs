@@ -14,4 +14,9 @@ public class Projectile : MonoBehaviour
     {
         Destroy(gameObject);
     }
+
+    public void IncreaseDamage()
+    {
+        damage += 1;
+    }
 }
