@@ -54,6 +54,7 @@ public class Rewards : MonoBehaviour
     {
         if(score >= rewardsThershold[currentRewardThreshold])
         {
+            
             rewardsUI.gameObject.SetActive(true);
             PreprareRewards();
             currentRewardThreshold++;
@@ -61,12 +62,15 @@ public class Rewards : MonoBehaviour
             recievingRewards = true;
             PositionArrow();
             Time.timeScale = 0f;
+            if(currentRewardThreshold == rewardsThershold.Length)
+            {
+                FindObjectOfType<LevelManager>().LoadLevel("Win Screen");
+            }
         }
     }
 
     void PreprareRewards()
     {
-        
         for (int i = 0; i < images.Length; i++)
         {
             int rewardNumber = GetUniqueRewardNumber();
@@ -103,7 +107,6 @@ public class Rewards : MonoBehaviour
     {
         recievingRewards = false;
         var player = FindObjectOfType<PlayerController>();
-        print(currentReward);
         switch (rewards[rewardNumbers[currentReward]].GetRewardType())
         {
             case (Reward.Type.firingRate):

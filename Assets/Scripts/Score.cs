@@ -23,6 +23,7 @@ public class Score : MonoBehaviour
 	{
 		score += points;
         FindObjectOfType<Rewards>().CheckForRewards(score);
+        FindObjectOfType<EnemySpawner>().CheckToAddEnemies(score);
 		myText.text = score.ToString ();
 	}
 }

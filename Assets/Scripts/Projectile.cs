@@ -3,7 +3,14 @@ using System.Collections;
 
 public class Projectile : MonoBehaviour
 {
-    [SerializeField] int damage = 1;
+    [SerializeField] int startingDamage = 1;
+
+    int damage = 0;
+
+    void Start()
+    {
+        damage = startingDamage;
+    }
 
     public int GetDamage()
     {

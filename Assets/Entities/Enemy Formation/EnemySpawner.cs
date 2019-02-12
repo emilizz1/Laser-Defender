@@ -9,12 +9,15 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] float width;
     [SerializeField] float height;
     [SerializeField] float spawnDelay = 0.5f;
+    [SerializeField] int[] scoreThreshold;
+    [SerializeField] GameObject[] enemiesToAdd;
 
     bool playing = true;
 
     private bool movingRight = true;
     private float xmin;
     private float xmax;
+    int currentScoreThreshold = 0;
     
     void Start()
     {
@@ -91,8 +94,17 @@ public class EnemySpawner : MonoBehaviour
         Gizmos.DrawWireCube(transform.position, new Vector3(width, height));
     }
 
-    public void AddEnemyPrefab(GameObject prefab)
+    void AddEnemyPrefab(GameObject prefab)
     {
         enemyPrefabs.Add(prefab);
+    }
+
+    public void CheckToAddEnemies(int score)
+    {
+        if(currentScoreThreshold != scoreThreshold.Length && scoreThreshold[currentScoreThreshold] <= score)
+        {
+            enemyPrefabs.Add(enemiesToAdd[currentScoreThreshold]);
+            currentScoreThreshold++;
+        }
     }
 }
