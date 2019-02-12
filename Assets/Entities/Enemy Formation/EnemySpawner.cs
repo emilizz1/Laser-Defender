@@ -8,7 +8,6 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] float speed;
     [SerializeField] float width;
     [SerializeField] float height;
-    [SerializeField] float spawnDelay = 0.5f;
     [SerializeField] int[] scoreThreshold;
     [SerializeField] GameObject[] enemiesToAdd;
 
@@ -72,7 +71,7 @@ public class EnemySpawner : MonoBehaviour
                 GameObject enemy = Instantiate(enemyPrefabs[Random.Range(0, enemyPrefabs.Count)], freePosition.transform.position, Quaternion.identity) as GameObject;
                 enemy.transform.parent = freePosition;
             }
-            yield return new WaitForSeconds(spawnDelay);
+            yield return new WaitForSeconds((7- GetEmptyPositions().Length) * 0.2f);
         }
     }
 
@@ -92,11 +91,6 @@ public class EnemySpawner : MonoBehaviour
     public void OnDrawGizmos()
     {
         Gizmos.DrawWireCube(transform.position, new Vector3(width, height));
-    }
-
-    void AddEnemyPrefab(GameObject prefab)
-    {
-        enemyPrefabs.Add(prefab);
     }
 
     public void CheckToAddEnemies(int score)

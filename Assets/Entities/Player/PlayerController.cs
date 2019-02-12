@@ -10,10 +10,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float firingRate;
     [SerializeField] int health = 10;
     [SerializeField] AudioClip fireSound;
+    [SerializeField] AudioClip hitSound;
 
     float xmin;
     float xmax;
     float lastFireTime = 0;
+    int currentDamage = 5;
 
     void Start()
     {
@@ -28,6 +30,7 @@ public class PlayerController : MonoBehaviour
     void Fire()
     {
         GameObject beam = Instantiate(projectile, transform.position, Quaternion.identity) as GameObject;
+        beam.GetComponent<Projectile>().GiveNewDamage(currentDamage);
         beam.GetComponent<Rigidbody2D>().velocity = new Vector3(0, projectileSpeed, 0);
         AudioSource.PlayClipAtPoint(fireSound, transform.position);
     }
@@ -56,6 +59,7 @@ public class PlayerController : MonoBehaviour
         Projectile missile = collider.gameObject.GetComponent<Projectile>();
         if (missile)
         {
+            AudioSource.PlayClipAtPoint(hitSound, transform.position);
             health -= missile.GetDamage();
             FindObjectOfType<PlayerHealth>().UpdateHealth(health);
             missile.Hit();
@@ -80,7 +84,7 @@ public class PlayerController : MonoBehaviour
 
     public void UpgradeDamage()
     {
-        projectile.GetComponent<Projectile>().IncreaseDamage();
+        currentDamage++;
     }
 
     public void UpgradeProjectileSpeed()
@@ -90,12 +94,12 @@ public class PlayerController : MonoBehaviour
 
     public void UpgradeFiringRate()
     {
-        firingRate -= 0.05f;
+        firingRate -= 0.04f;
     }
 
     public void UpgradeHealth()
     {
-        health += 10;
+        health += 25;
         FindObjectOfType<PlayerHealth>().UpdateHealth(health);
     }
 }

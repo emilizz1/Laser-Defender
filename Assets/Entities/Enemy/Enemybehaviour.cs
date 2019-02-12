@@ -8,6 +8,7 @@ public class Enemybehaviour : MonoBehaviour
     [SerializeField] float projectileSpeed;
     [SerializeField] float firingRate = 0.5f;
     [SerializeField] int scoreValue = 10;
+    [SerializeField] int projectileDamage = 5;
     [SerializeField] AudioClip fireSound;
     [SerializeField] AudioClip deathSound;
 
@@ -37,13 +38,14 @@ public class Enemybehaviour : MonoBehaviour
     void Fire()
     {
         GameObject beam = Instantiate(projectile, transform.position, Quaternion.identity) as GameObject;
+        beam.GetComponent<Projectile>().GiveNewDamage(projectileDamage);
         beam.GetComponent<Rigidbody2D>().velocity = new Vector3(0, -projectileSpeed, 0);
         AudioSource.PlayClipAtPoint(fireSound, transform.position);
     }
 
     void Update()
     {
-        float probability = Time.deltaTime * firingRate;
+        float probability = Time.deltaTime * firingRate; // 0.2 * 0.75=0.15    0.2*0.65= 0.13
         if (Random.value < probability)
         {
             Fire();
