@@ -26,6 +26,7 @@ public class Enemybehaviour : MonoBehaviour
         {
             health -= missile.GetDamage();
             missile.Hit();
+            StartCoroutine(HitBlink());
             if (health <= 0)
             {
                 Destroy(gameObject);
@@ -50,5 +51,14 @@ public class Enemybehaviour : MonoBehaviour
         {
             Fire();
         }
+    }
+
+    IEnumerator HitBlink()
+    {
+        print("Blink");
+        var tempSprite = GetComponent<SpriteRenderer>();
+        tempSprite.material.SetFloat("_FlashAmount", 1);
+        yield return new WaitForSeconds(0.1f);
+        tempSprite.material.SetFloat("_FlashAmount", 0);
     }
 }
